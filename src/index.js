@@ -90,7 +90,7 @@ const textarea = document.querySelector('.textarea');
 
 function createTextareaElem() {
     const texAreaContainerElem = document.createElement('section');
-    texAreaContainerElem.classList.add('print-screen');
+    texAreaContainerElem.classList.add('textarea__container');
     const textAreaElem = document.createElement('textarea');
     textAreaElem.classList.add('textarea');
     texAreaContainerElem.append(textAreaElem);
@@ -166,7 +166,7 @@ function changedCapsLock() {
     }
 }
 
-function changedlanguage() {
+function changedLanguage() {
     lang === 'eng' ? lang = 'ru' : lang = 'eng';
 
     if (keyCapsLock.classList.contains('active')) {
@@ -174,7 +174,6 @@ function changedlanguage() {
     } else {
         lang === 'eng' ? updateKeys('eng', 'lower') : updateKeys('rus', 'lower');
     }
-    // lang === 'eng' ? lang = 'ru' : lang = 'eng';
     window.localStorage.setItem('lang', lang);
 }
 
@@ -222,11 +221,11 @@ function keyboardPressDown(e) {
         }
     }
     if (e.altKey && e.ctrlKey) {
-        changedlanguage();
+        changedLanguage();
     }
 
     let code = e.code;
-
+    console.log(code)
     if (code === 'Tab') {
         textarea.value += '   ';
     } else if (code === 'Enter') {
@@ -253,7 +252,7 @@ function keyboardPressDown(e) {
         code === 'CapsLock'||
         code === 'ShiftLeft' ||
         code === 'ShiftRight' ||
-        code === 'Meta'
+        code === 'MetaLeft'
     ) {
         textarea.value += '';
     } else {
@@ -365,8 +364,23 @@ function clickedBackspaceBtn() {
 
 function getLocalStorage() {
     lang = localStorage.getItem('lang');
-    changedlanguage();
+
+    if (keyCapsLock.classList.contains('active')) {
+        lang === 'eng' ? updateKeys('eng', 'upper') : updateKeys('rus', 'upper');
+    } else {
+        lang === 'eng' ? updateKeys('eng', 'lower') : updateKeys('rus', 'lower');
+    }
+
+    window.localStorage.setItem('lang', lang);
 }
+
+// export function setLanguage(name, value) {
+//     localStorage.setItem('lang', JSON.stringify(lang));
+// }
+//
+// export function getLanguage(name, lang = '"en"') {
+//     return JSON.parse(localStorage.getItem(lang);
+// }
 
 keyCapsLock.addEventListener('click', changedCapsLock);
 keyShiftLeft.addEventListener('mousedown', changedShiftDown);
